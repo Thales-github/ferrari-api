@@ -18,6 +18,7 @@ export class UserController {
 
         return this.userService.getByEmail(email);
     }
+
     @Put(":id")
     async update(
         @Param("id") id,

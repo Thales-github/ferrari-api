@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from "bcrypt";
 import { Prisma } from "@prisma/client";
@@ -10,7 +10,7 @@ export class UserService {
     constructor(private prisma: PrismaService) { }
 
 
-    async get(id: number) {
+    async get(id: number, hash = false) {
 
         id = Number(id);
 
@@ -27,7 +27,10 @@ export class UserService {
 
         if (!user) throw new NotFoundException("Usuário não encontrado");
 
-        delete user.password;
+        if (!hash) {
+
+            delete user.password;
+        }
         return user;
     }
 
@@ -144,5 +147,21 @@ export class UserService {
         }
 
         return this.get(id);
+    }
+
+    async checkPassword(id: number, password: string) {
+
+        const user = await this.get(id, true);
+
+        // console.log(password, user.password);
+
+
+        const checked = await bcrypt.compare(password, user.password);
+
+        if (!checked) {
+            throw new UnauthorizedException("email ou senha incorretos");
+        }
+
+        return true;
     }
 }
