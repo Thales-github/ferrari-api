@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Body, Post, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Controller, Body, Post, Get, Headers, BadRequestException, NotFoundException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { parse } from 'date-fns';
 import { AuthService } from './auth.service';
@@ -53,4 +53,11 @@ export class AuthController {
 
         return this.authService.login({ email, password });
     }
+
+    // @Get("me")
+    // async me(@Headers("authorization") authorization) {
+
+    //     const token = authorization.split(" ")[1];
+    //     return await this.authService.decodeToken(token);
+    // }
 }

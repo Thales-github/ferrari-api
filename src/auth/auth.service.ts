@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt/dist';
 
@@ -31,4 +31,14 @@ export class AuthService {
             token
         };
     }
+
+    // async decodeToken(token: string) {
+
+    //     try {
+    //         await this.jwtService.verify(token);
+    //     } catch (error) {
+    //         throw new UnauthorizedException(error);
+    //     }
+    //     return this.jwtService.decode(token);
+    // }
 }
